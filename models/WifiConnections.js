@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 const wifi_connections = new mongoose.Schema({
+    type: {
+        type: String,
+        default: "Point"
+    },
+
     division: {
         type: Number,
         required: true,
@@ -20,14 +25,19 @@ const wifi_connections = new mongoose.Schema({
         type: String,
         required: false,
     },
-    latitude: {
-        type: Number,
+
+    coordinates: {
+        type: [Number],
         required: true,
+        validate: {
+            validator: function (value) {
+                return Array.isArray(value) && value.length === 2 &&
+                    typeof value[0] === 'number' && typeof value[1] === 'number';
+            },
+            message: props => `${props.value} is not a valid coordinate array.`
+        }
     },
-    longitude: {
-        type: Number,
-        required: true,
-    },
+
     responsible: {
         type: String,
         required: true,
