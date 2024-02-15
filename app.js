@@ -1,47 +1,36 @@
-const express = require('express');
-const cors = require('cors');
-require("./config/DB");
+const express = require("express");
 const app = express();
-app.use(cors());
-app.use(express.urlencoded({ extended: true }));
+const cors = require("cors");
+
+// const port = process.env.PORT || 5000;
+
+// middlewares
 app.use(express.json());
+app.use(cors());
 
-//users routed 
-const userRouter = require('./routes/user.route');
-app.use("/api", userRouter);
+const wifiConnectionRoute = require('./routes/v1/wifiConnection.route')
 
-//members route
-const memberRoute=require("./routes/members.route");
-app.use("/api",memberRoute);
+const categoriesRoute = require('./routes/v1/jobCategories.route')
+const jobsRoute = require('./routes/v1/job.route')
+const employersRoute = require('./routes/v1/employer.route')
+const jobSeekerRoute = require('./routes/v1/jobSeeker.route')
+const applicationRoute = require('./routes/v1/application.route')
+const userRoute = require('./routes/v1/user.route')
 
-//requestMember
-const requestMember=require("./routes/JUBOF_Mem_Request.route");
-app.use("/api",requestMember);
 
-//authentication
-const {authenticationRouter}=require("./helper/Authorization.route");
-app.use("/api/authentication",authenticationRouter);
+// routes
+app.use('/api/v1/wificonnection', wifiConnectionRoute)
 
-//promotionList route
-const promotionList=require("./routes/promotionList.route");
-app.use('/api',promotionList);
-
-//postingPlaceList
-const postingPlaceList=require("./routes/postingPlaceList.route");
-app.use('/api',postingPlaceList);
-
+app.use('/api/v1/categories', categoriesRoute)
+app.use('/api/v1/jobs', jobsRoute)
+app.use('/api/v1/employers', employersRoute)
+app.use('/api/v1/jobSeeker', jobSeekerRoute)
+app.use('/api/v1/application', applicationRoute)
+app.use('/api/v1/user', userRoute)
 
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/views/index.html");
+  res.send("Congratulation! Transmission module server is running.");
 });
 
-app.use((req, res, next) => {
-    res.status(404).json({ message: "Route not found" });
-});
-
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ message: "Internal Server Error" });
-});
 
 module.exports = app;
