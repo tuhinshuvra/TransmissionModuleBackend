@@ -37,7 +37,6 @@ const wifi_connections = new mongoose.Schema({
             message: props => `${props.value} is not a valid coordinate array.`
         }
     },
-
     responsible: {
         type: String,
         required: true,
