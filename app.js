@@ -10,6 +10,7 @@ app.use(cors());
 
 const wifiConnectionRoute = require('./routes/v1/wifiConnection.route')
 
+
 const categoriesRoute = require('./routes/v1/jobCategories.route')
 const jobsRoute = require('./routes/v1/job.route')
 const employersRoute = require('./routes/v1/employer.route')
